@@ -1,0 +1,1680 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ആദ്യം മധുരിക്കും പിന്നെ കൈക്കും | Adym madhurikum pinne kaiykum — AI Expression Arena</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@500;600;700;800;900&family=Rajdhani:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Canvas Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
+
+  <!-- MediaPipe & Emotion Detector Dependencies -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
+  <script src="emotionDetector.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            cyber: {
+              dark: '#05070f',
+              darker: '#020308',
+              card: 'rgba(10, 16, 31, 0.85)',
+              cyan: '#00f0ff',
+              violet: '#a855f7',
+              amber: '#f59e0b',
+              emerald: '#10b981',
+              rose: '#f43f5e'
+            }
+          },
+          fontFamily: {
+            sans: ['Space Grotesk', 'Rajdhani', 'sans-serif'],
+            display: ['Orbitron', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+            malayalam: ['Anek Malayalam', 'sans-serif'],
+          },
+          animation: {
+            'scan': 'scanLine 3s ease-in-out infinite',
+            'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
+            'reticle-spin': 'reticleSpin 12s linear infinite',
+            'reticle-spin-rev': 'reticleSpinRev 8s linear infinite',
+            'float-slow': 'floatSlow 6s ease-in-out infinite',
+          },
+          keyframes: {
+            scanLine: {
+              '0%, 100%': { top: '0%' },
+              '50%': { top: '96%' },
+            },
+            pulseGlow: {
+              '0%, 100%': { opacity: '0.4', transform: 'scale(1)' },
+              '50%': { opacity: '0.9', transform: 'scale(1.02)' },
+            },
+            reticleSpin: {
+              '0%': { transform: 'rotate(0deg)' },
+              '100%': { transform: 'rotate(360deg)' },
+            },
+            reticleSpinRev: {
+              '0%': { transform: 'rotate(360deg)' },
+              '100%': { transform: 'rotate(0deg)' },
+            },
+            floatSlow: {
+              '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+              '50%': { transform: 'translateY(-12px) rotate(1.5deg)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #030611;
+      color: #f1f5f9;
+      font-family: 'Space Grotesk', sans-serif;
+      overflow-x: hidden;
+    }
+    .cyber-scanlines {
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%), 
+                  linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+      background-size: 100% 3px, 6px 100%;
+      pointer-events: none;
+    }
+    .cyber-grid-bg {
+      background-image: 
+        linear-gradient(to right, rgba(0, 240, 255, 0.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 240, 255, 0.06) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .glass-panel {
+      background: rgba(10, 16, 31, 0.82);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(0, 240, 255, 0.2);
+    }
+    .glass-panel-amber {
+      background: rgba(26, 17, 7, 0.88);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+    }
+    .neon-text-cyan {
+      text-shadow: 0 0 10px rgba(0, 240, 255, 0.6), 0 0 20px rgba(0, 240, 255, 0.3);
+    }
+    .neon-text-amber {
+      text-shadow: 0 0 10px rgba(245, 158, 11, 0.6), 0 0 20px rgba(245, 158, 11, 0.3);
+    }
+    .neon-text-emerald {
+      text-shadow: 0 0 10px rgba(16, 185, 129, 0.6), 0 0 20px rgba(16, 185, 129, 0.3);
+    }
+  </style>
+</head>
+<body class="min-h-screen relative flex flex-col selection:bg-cyan-500/30 selection:text-cyan-200">
+
+  <!-- FULLY COVERED MALAYALAM MEME CINEMATIC BACKGROUND -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none">
+    <!-- 4-Quadrant Seamless Full Screen Image Cover -->
+    <div class="absolute inset-0 grid grid-cols-2 grid-rows-2 w-full h-full scale-[1.03]">
+      
+      <!-- Quadrant 1: Vintage Smile Legend (Top-Left) -->
+      <div id="bgQuadSmile" class="relative w-full h-full overflow-hidden border-r border-b border-cyan-500/20 transition-all duration-700 opacity-40">
+        <img src="assets/meme_vintage.jpg" alt="Vintage Smile" class="w-full h-full object-cover grayscale-[15%] contrast-125 brightness-75">
+        <div class="absolute inset-0 bg-gradient-to-br from-cyan-950/60 via-transparent to-[#030611]/80"></div>
+      </div>
+
+      <!-- Quadrant 2: Sadhanam Kayyilundo (Top-Right) -->
+      <div id="bgQuadLaugh" class="relative w-full h-full overflow-hidden border-b border-amber-500/20 transition-all duration-700 opacity-40">
+        <img src="assets/meme_sadhanam.jpg" alt="Sadhanam Shock" class="w-full h-full object-cover contrast-110 brightness-75">
+        <div class="absolute inset-0 bg-gradient-to-bl from-amber-950/60 via-transparent to-[#030611]/80"></div>
+      </div>
+
+      <!-- Quadrant 3: Shaji Chetta (Bottom-Left) -->
+      <div id="bgQuadAngry" class="relative w-full h-full overflow-hidden border-r border-purple-500/20 transition-all duration-700 opacity-40">
+        <img src="assets/meme_shaji.jpg" alt="Shaji Angry" class="w-full h-full object-cover contrast-115 brightness-75">
+        <div class="absolute inset-0 bg-gradient-to-tr from-purple-950/60 via-transparent to-[#030611]/80"></div>
+      </div>
+
+      <!-- Quadrant 4: Aniyaa Nilkku (Bottom-Right) -->
+      <div id="bgQuadCry" class="relative w-full h-full overflow-hidden border-rose-500/20 transition-all duration-700 opacity-40">
+        <img src="assets/meme_aniya.jpg" alt="Aniyaa Cry" class="w-full h-full object-cover contrast-120 brightness-75">
+        <div class="absolute inset-0 bg-gradient-to-tl from-rose-950/60 via-transparent to-[#030611]/80"></div>
+      </div>
+
+    </div>
+
+    <!-- Cyberpunk Dark Vignette & Mesh Overlay for Maximum Text Readability -->
+    <div class="absolute inset-0 bg-gradient-to-b from-[#030611]/75 via-[#030611]/60 to-[#030611]/85 backdrop-blur-[1.5px]"></div>
+    <div class="absolute inset-0 cyber-grid-bg opacity-35"></div>
+    <div class="absolute inset-0 cyber-scanlines opacity-20"></div>
+    <canvas id="bgCanvas" class="absolute inset-0 block w-full h-full z-[2] opacity-70"></canvas>
+  </div>
+
+  <!-- Top Navbar -->
+  <header class="relative z-30 w-full border-b border-cyan-500/20 bg-[#05070f]/80 backdrop-blur-xl px-4 py-3 sm:px-6">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      
+      <!-- Brand & Title -->
+      <div id="navHomeBtn" class="flex items-center gap-3 cursor-pointer group">
+        <div class="relative flex items-center justify-center w-10 h-10 rounded-lg bg-cyan-950/60 border border-cyan-400/40 group-hover:border-cyan-400 transition-all shadow-[0_0_15px_rgba(0,240,255,0.2)]">
+          <span class="text-xl">🎭</span>
+          <div class="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-cyan-400 animate-ping"></div>
+          <div class="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-cyan-400"></div>
+        </div>
+
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-base sm:text-lg font-black tracking-wider uppercase font-display bg-gradient-to-r from-cyan-400 via-violet-300 to-amber-300 bg-clip-text text-transparent">
+              Adym madhurikum pinne kaiykum
+            </h1>
+            <span class="hidden md:inline-block px-1.5 py-0.5 text-[10px] font-mono tracking-widest uppercase bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 rounded">
+              v2.5 AI
+            </span>
+          </div>
+          <p class="text-xs font-malayalam text-slate-400 tracking-wide">
+            ആദ്യം മധുരിക്കും പിന്നെ കൈക്കും <span class="text-cyan-400/60 text-[10px] font-mono">| AI FACIAL ARENA + MALAYALAM ROAST</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Live Telemetry -->
+      <div class="hidden lg:flex items-center gap-4 text-xs font-mono text-slate-400 bg-slate-950/60 border border-slate-800/80 px-4 py-1.5 rounded-full">
+        <div class="flex items-center gap-2">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          </span>
+          <span class="text-emerald-400 font-semibold tracking-wider">MEDIAPIPE ONLINE</span>
+        </div>
+        <span class="text-slate-700">|</span>
+        <div class="flex items-center gap-1.5 text-cyan-400/90">
+          <span>AI VOICE ROAST ACTIVE</span>
+        </div>
+        <span class="text-slate-700">|</span>
+        <div id="navModeBadge" class="text-violet-400 font-semibold tracking-wider">
+          MODE: CLASSIC
+        </div>
+      </div>
+
+      <!-- Right Audio Control -->
+      <div class="flex items-center gap-2">
+        <button id="testVoiceBtn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-amber-500/40 bg-amber-950/40 hover:bg-amber-900/50 text-amber-300 transition-all text-xs font-mono shadow-[0_0_10px_rgba(245,158,11,0.2)]">
+          <span>🎙️</span>
+          <span class="hidden sm:inline">TEST VOICE</span>
+        </button>
+        <button id="soundToggleBtn" class="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-cyan-500/30 bg-cyan-950/30 hover:bg-cyan-900/40 text-cyan-300 transition-all text-xs font-mono shadow-[0_0_10px_rgba(0,240,255,0.1)]">
+          <span id="soundIcon">🔊</span>
+          <span id="soundLabel" class="hidden sm:inline">ROAST VOICE ON</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main View Container -->
+  <main class="relative z-10 flex-1 flex flex-col justify-center">
+
+    <!-- 1. HERO & WELCOME SCREEN -->
+    <section id="heroScreen" class="relative flex flex-col items-center justify-center min-h-[calc(100vh-120px)] px-4 py-8 sm:px-6 max-w-6xl mx-auto text-center">
+      
+      <!-- Cyber Badge -->
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-950/40 backdrop-blur-md mb-6 shadow-[0_0_15px_rgba(0,240,255,0.15)] animate-pulse-glow">
+        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+        <span class="text-xs font-mono font-semibold tracking-widest uppercase text-cyan-300">
+          MEDIAPIPE FACE MESH + MALAYALAM VOICE ROAST ENGINE // READY
+        </span>
+      </div>
+
+      <!-- Main Glowing Titles -->
+      <div class="relative mb-4">
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold font-malayalam tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-violet-300 to-cyan-300 mb-2 drop-shadow-[0_0_20px_rgba(245,158,11,0.3)]">
+          ആദ്യം മധുരിക്കും പിന്നെ കൈക്കും
+        </h2>
+        <h1 class="text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight font-display text-white">
+          Adym <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 neon-text-cyan">madhurikum</span>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-pink-500">pinne</span>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500 neon-text-amber">kaiykum</span>
+        </h1>
+      </div>
+
+      <!-- Subtitle -->
+      <p class="max-w-2xl text-base sm:text-xl text-slate-300/90 font-light mb-8 leading-relaxed">
+        The Ultimate AI Expression Arena — Make the expression on demand, and get roasted out loud by the sassy Malayalam AI!
+      </p>
+
+      <!-- Game Mode Selection -->
+      <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-8 max-w-xl">
+        <button data-mode="classic" class="mode-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-mono transition-all border border-cyan-400 bg-cyan-950/60 text-cyan-200 shadow-[0_0_20px_rgba(0,240,255,0.3)] scale-105">
+          <div class="font-bold tracking-wide">Classic 4-Round</div>
+          <div class="text-[10px] opacity-70 hidden sm:block">Smile, Cry, Laugh, Angry</div>
+        </button>
+        <button data-mode="blitz" class="mode-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-mono transition-all border border-slate-800 bg-slate-950/40 text-slate-400 hover:text-slate-200">
+          <div class="font-bold tracking-wide">60s Roast Blitz</div>
+          <div class="text-[10px] opacity-70 hidden sm:block">Rapid-fire Malayalam roasts</div>
+        </button>
+        <button data-mode="zen" class="mode-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-mono transition-all border border-slate-800 bg-slate-950/40 text-slate-400 hover:text-slate-200">
+          <div class="font-bold tracking-wide">Endless Practice</div>
+          <div class="text-[10px] opacity-70 hidden sm:block">Test face mesh & voice roasts</div>
+        </button>
+      </div>
+
+      <!-- Start Challenge Glowing Button -->
+      <div class="relative group mb-10">
+        <div class="absolute -inset-1 rounded-2xl bg-gradient-to-r from-cyan-500 via-violet-600 to-amber-500 opacity-75 blur-lg group-hover:opacity-100 group-hover:blur-xl transition duration-500 group-hover:scale-105 animate-pulse-glow"></div>
+        <button id="startChallengeBtn" class="relative flex items-center gap-4 px-8 sm:px-12 py-4 sm:py-5 rounded-xl bg-[#070b18] border-2 border-cyan-400 text-white font-display font-black text-lg sm:text-2xl tracking-widest uppercase transition-all duration-300 transform group-hover:scale-[1.02] group-active:scale-95 shadow-[0_0_30px_rgba(0,240,255,0.4)] hover:border-cyan-300">
+          <span class="flex items-center justify-center w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-400/50">▶</span>
+          <span class="bg-gradient-to-r from-white via-cyan-100 to-cyan-400 bg-clip-text text-transparent">START CHALLENGE</span>
+          <span class="text-cyan-400 group-hover:translate-x-1.5 transition-transform">➔</span>
+        </button>
+      </div>
+
+      <!-- 4 ARTISTIC MALAYALAM MEME CHARACTER SHOWCASE CARDS -->
+      <div class="w-full max-w-5xl">
+        <div class="flex items-center justify-center gap-2 mb-4">
+          <span class="text-cyan-400">🎭</span>
+          <h3 class="text-xs sm:text-sm font-mono font-bold tracking-widest uppercase text-slate-400">
+            ICONIC MALAYALAM FACIAL TARGETS
+          </h3>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-left">
+          
+          <!-- Card 1: SMILE -->
+          <div class="p-3.5 rounded-2xl glass-panel border-cyan-500/30 hover:border-cyan-400 transition-all duration-300 group hover:-translate-y-1">
+            <div class="w-full aspect-square rounded-xl overflow-hidden mb-3 border border-cyan-400/30 group-hover:border-cyan-400 relative">
+              <img src="assets/meme_vintage.jpg" alt="Smile Legend" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <span class="absolute top-2 left-2 px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-cyan-950/80 text-cyan-300 border border-cyan-400/50">😄 01</span>
+            </div>
+            <div class="font-display font-black text-white text-sm">SMILE</div>
+            <div class="text-xs text-cyan-300 font-malayalam font-semibold">വലിയൊരു ഇളി!</div>
+            <div class="text-[10px] font-mono text-slate-400 mt-1">Show teeth wide</div>
+          </div>
+
+          <!-- Card 2: CRY -->
+          <div class="p-3.5 rounded-2xl glass-panel border-rose-500/30 hover:border-rose-400 transition-all duration-300 group hover:-translate-y-1">
+            <div class="w-full aspect-square rounded-xl overflow-hidden mb-3 border border-rose-400/30 group-hover:border-rose-400 relative">
+              <img src="assets/meme_aniya.jpg" alt="Cry Legend" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <span class="absolute top-2 left-2 px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-950/80 text-rose-300 border border-rose-400/50">😭 02</span>
+            </div>
+            <div class="font-display font-black text-white text-sm">CRY / WEEP</div>
+            <div class="text-xs text-rose-300 font-malayalam font-semibold">അനിയാ നിൽക്ക്...</div>
+            <div class="text-[10px] font-mono text-slate-400 mt-1">Serial level sorrow</div>
+          </div>
+
+          <!-- Card 3: LAUGH / SHOCK -->
+          <div class="p-3.5 rounded-2xl glass-panel border-amber-500/30 hover:border-amber-400 transition-all duration-300 group hover:-translate-y-1">
+            <div class="w-full aspect-square rounded-xl overflow-hidden mb-3 border border-amber-400/30 group-hover:border-amber-400 relative">
+              <img src="assets/meme_sadhanam.jpg" alt="Shock Legend" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <span class="absolute top-2 left-2 px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-950/80 text-amber-300 border border-amber-400/50">😲 03</span>
+            </div>
+            <div class="font-display font-black text-white text-sm">LAUGH / SHOCK</div>
+            <div class="text-xs text-amber-300 font-malayalam font-semibold">സാധനം കയ്യിലുണ്ടോ?!</div>
+            <div class="text-[10px] font-mono text-slate-400 mt-1">Jaw wide open</div>
+          </div>
+
+          <!-- Card 4: ANGRY -->
+          <div class="p-3.5 rounded-2xl glass-panel border-purple-500/30 hover:border-purple-400 transition-all duration-300 group hover:-translate-y-1">
+            <div class="w-full aspect-square rounded-xl overflow-hidden mb-3 border border-purple-400/30 group-hover:border-purple-400 relative">
+              <img src="assets/meme_shaji.jpg" alt="Angry Legend" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <span class="absolute top-2 left-2 px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-purple-950/80 text-purple-300 border border-purple-400/50">😡 04</span>
+            </div>
+            <div class="font-display font-black text-white text-sm">ANGRY</div>
+            <div class="text-xs text-purple-300 font-malayalam font-semibold">ഷാജിയേട്ടാ ഇവളെ അങ്ങ്...</div>
+            <div class="text-[10px] font-mono text-slate-400 mt-1">Intense fierce glare</div>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+    <!-- 2. LIVE GAME ARENA -->
+    <section id="arenaScreen" class="hidden relative max-w-7xl mx-auto px-4 py-4 sm:px-6 w-full">
+      
+      <!-- Top Session Stats Bar -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+        
+        <!-- Total Score -->
+        <div class="glass-panel p-3 rounded-xl flex items-center gap-3 border-cyan-500/20">
+          <div class="w-10 h-10 rounded-lg bg-cyan-950/60 border border-cyan-500/40 flex items-center justify-center text-cyan-400 text-lg">
+            ⚡
+          </div>
+          <div>
+            <div class="text-[10px] font-mono text-slate-400 uppercase tracking-wider">TOTAL SCORE</div>
+            <div id="arenaTotalScore" class="text-xl sm:text-2xl font-black font-display text-white neon-text-cyan">
+              0
+            </div>
+          </div>
+        </div>
+
+        <!-- Combo Multiplier -->
+        <div id="comboCard" class="glass-panel p-3 rounded-xl flex items-center gap-3 border-cyan-500/20 transition-all">
+          <div id="comboIconBox" class="w-10 h-10 rounded-lg flex items-center justify-center border bg-slate-900/60 border-slate-700 text-slate-400 text-lg">
+            🔥
+          </div>
+          <div>
+            <div class="text-[10px] font-mono text-slate-400 uppercase tracking-wider">COMBO STREAK</div>
+            <div id="arenaComboText" class="text-xl sm:text-2xl font-black font-display text-amber-400 flex items-center gap-1.5">
+              1.0x
+            </div>
+          </div>
+        </div>
+
+        <!-- Round Progress -->
+        <div class="glass-panel p-3 rounded-xl flex items-center gap-3 border-cyan-500/20">
+          <div class="w-10 h-10 rounded-lg bg-violet-950/60 border border-violet-500/40 flex items-center justify-center text-violet-400 text-lg">
+            🎯
+          </div>
+          <div>
+            <div class="text-[10px] font-mono text-slate-400 uppercase tracking-wider">CHALLENGE ROUND</div>
+            <div id="arenaRoundText" class="text-xl sm:text-2xl font-black font-display text-violet-300">
+              1 / 5
+            </div>
+          </div>
+        </div>
+
+        <!-- Camera Feed Mode Toggle -->
+        <div class="glass-panel p-3 rounded-xl flex items-center justify-between border-cyan-500/20">
+          <div class="flex items-center gap-2.5">
+            <div id="camIndicatorBox" class="w-10 h-10 rounded-lg flex items-center justify-center border bg-cyan-950/60 border-cyan-400/40 text-cyan-400 text-lg">
+              📷
+            </div>
+            <div>
+              <div class="text-[10px] font-mono text-slate-400 uppercase tracking-wider">MEDIAPIPE TRACKER</div>
+              <div id="camModeText" class="text-xs font-mono font-bold text-white uppercase">
+                AI HOLOGRAM
+              </div>
+            </div>
+          </div>
+
+          <button id="toggleCameraBtn" class="px-2.5 py-1 text-[10px] font-mono rounded-lg border border-cyan-500/40 bg-cyan-950/40 hover:bg-cyan-800/40 text-cyan-300 transition-colors">
+            USE WEBCAM
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Main Arena Layout: Video/HUD (Left) + Targets & Meters (Right) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+        
+        <!-- Left Panel: Video Feed & Futuristic HUD (7 cols) -->
+        <div class="lg:col-span-7 flex flex-col gap-3">
+          
+          <div class="relative w-full aspect-[4/3] rounded-2xl overflow-hidden glass-panel border-2 border-cyan-500/30 shadow-[0_0_35px_rgba(0,240,255,0.15)] bg-[#030611]">
+            
+            <!-- Live Video (id="webcam") -->
+            <video id="webcam" playsinline muted autoplay class="absolute inset-0 w-full h-full object-cover transform -scale-x-100 z-[1] transition-opacity duration-300"></video>
+
+            <!-- Hologram Simulated Backdrop -->
+            <div id="hologramBackdrop" class="hidden absolute inset-0 flex items-center justify-center bg-[#050814] z-0">
+              <div class="absolute inset-0 cyber-grid-bg opacity-30"></div>
+              <div class="absolute w-72 h-72 rounded-full border border-cyan-500/20 animate-ping opacity-25"></div>
+              <div class="absolute w-96 h-96 rounded-full border border-violet-500/15"></div>
+              <div class="relative z-0 text-center opacity-40">
+                <div class="text-[10px] font-mono tracking-widest text-cyan-400 mb-1">
+                  MEDIAPIPE FACE MESH SYNTHESIZER
+                </div>
+                <div class="text-xs font-mono text-slate-500">
+                  REAL-TIME 468 BIOMETRIC POINTS
+                </div>
+              </div>
+            </div>
+
+            <!-- Dynamic Facial Landmark Canvas Overlay -->
+            <canvas id="faceCanvas" width="640" height="480" class="absolute inset-0 w-full h-full pointer-events-none z-10"></canvas>
+
+            <!-- Futuristic HUD Reticle Overlay -->
+            <div class="absolute inset-0 pointer-events-none z-20 flex flex-col justify-between p-4">
+              
+              <!-- Top HUD Telemetry -->
+              <div class="flex items-center justify-between text-[11px] font-mono">
+                <div id="targetLockBadge" class="flex items-center gap-2 px-2.5 py-1 rounded-md bg-slate-950/80 border border-cyan-500/30 text-cyan-400">
+                  <span class="animate-spin inline-block">🎯</span>
+                  <span id="targetLockText">SCANNER: ALIGNED</span>
+                </div>
+
+                <div class="flex items-center gap-2 px-2.5 py-1 rounded-md bg-slate-950/80 border border-slate-800 text-slate-400">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span id="detectedEmotionLabel">DETECTED: NONE</span>
+                </div>
+              </div>
+
+              <!-- Center Rotating HUD Reticle -->
+              <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div id="outerReticle" class="w-64 h-64 sm:w-80 sm:h-80 rounded-full border-2 border-dashed border-cyan-500/40 animate-reticle-spin transition-all duration-300"></div>
+                <div id="innerReticle" class="absolute w-48 h-48 sm:w-60 sm:h-60 rounded-full border border-dotted border-violet-500/40 animate-reticle-spin-rev transition-all duration-300"></div>
+                <div class="absolute w-6 h-6 flex items-center justify-center">
+                  <div class="w-1.5 h-1.5 rounded-full bg-cyan-400"></div>
+                  <div class="absolute w-6 h-[1px] bg-cyan-400/40"></div>
+                  <div class="absolute h-6 w-[1px] bg-cyan-400/40"></div>
+                </div>
+              </div>
+
+              <!-- 4 Corner Bracket Accents -->
+              <div class="absolute top-4 left-4 w-8 h-8 border-t-2 border-l-2 border-cyan-400"></div>
+              <div class="absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 border-cyan-400"></div>
+              <div class="absolute bottom-4 left-4 w-8 h-8 border-b-2 border-l-2 border-cyan-400"></div>
+              <div class="absolute bottom-4 right-4 w-8 h-8 border-b-2 border-r-2 border-cyan-400"></div>
+
+              <!-- Scanning Laser Line -->
+              <div class="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_15px_#00f0ff] animate-scan opacity-80"></div>
+
+              <!-- Live Malayalam AI Roast Banner With Meme Avatar -->
+              <div class="w-full flex flex-col items-center gap-1.5 pointer-events-auto">
+                <div id="roastSpeechBanner" class="hidden max-w-lg px-4 py-2.5 rounded-2xl bg-gradient-to-r from-purple-950/95 via-slate-950/95 to-cyan-950/95 border-2 border-amber-400 shadow-[0_0_35px_rgba(245,158,11,0.7)] text-left flex items-center gap-3 animate-bounce">
+                  <img id="roastMemeAvatar" src="assets/meme_vintage.jpg" alt="Roaster Avatar" class="w-12 h-12 rounded-xl object-cover border border-amber-400 flex-shrink-0">
+                  <div>
+                    <div class="flex items-center gap-1.5 text-[10px] font-mono font-bold text-amber-300 uppercase">
+                      <span>🎙️ AI MALAYALAM ROAST:</span>
+                    </div>
+                    <div id="roastSpeechText" class="text-sm font-bold font-malayalam text-white leading-tight">
+                      "ഊഹ് പിന്നെ... വലിയൊരു ചിരി!"
+                    </div>
+                  </div>
+                </div>
+
+                <div id="hudMatchBanner" class="px-3.5 py-1.5 rounded-xl bg-slate-950/85 border border-slate-800 text-[11px] font-mono text-slate-400">
+                  Mimic the demanded emotion and hold it steadily for 1 second!
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Scanlines -->
+            <div class="absolute inset-0 cyber-scanlines opacity-20 pointer-events-none"></div>
+
+            <!-- Pause Screen Overlay -->
+            <div id="pauseOverlay" class="hidden absolute inset-0 z-30 flex flex-col items-center justify-center bg-slate-950/85 backdrop-blur-md">
+              <div class="p-4 rounded-full bg-cyan-500/20 border border-cyan-400 mb-3 text-cyan-400 text-2xl">
+                ⏸
+              </div>
+              <h3 class="text-xl font-bold font-display uppercase tracking-wider text-white mb-2">
+                CHALLENGE PAUSED
+              </h3>
+              <p class="text-xs font-mono text-slate-400 mb-5">
+                AI SCANNER IN STANDBY MODE
+              </p>
+              <button id="resumeArenaBtn" class="px-6 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold font-display tracking-wider text-sm shadow-[0_0_20px_rgba(0,240,255,0.4)]">
+                RESUME ARENA
+              </button>
+            </div>
+
+          </div>
+
+          <!-- Quick Simulation Bar: lets users click to test any emotion demand -->
+          <div class="glass-panel p-3 rounded-xl border-cyan-500/20">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[11px] font-mono text-slate-400 tracking-wider uppercase flex items-center gap-1.5">
+                <span class="text-amber-400">⚡</span>
+                <span>Test Emotion & Hear Malayalam Roast:</span>
+              </span>
+              <span id="simOverrideTag" class="hidden text-[10px] font-mono text-cyan-400 animate-pulse">
+                ROAST SIMULATED
+              </span>
+            </div>
+
+            <div class="flex flex-wrap gap-2">
+              <button data-emotion="SMILE" class="sim-btn px-3 py-1.5 rounded-lg text-xs font-mono bg-slate-900/60 text-slate-300 border border-slate-800 hover:border-slate-700 flex items-center gap-1.5">
+                <span>😄</span>
+                <span>ചിരി (SMILE)</span>
+              </button>
+              <button data-emotion="CRY" class="sim-btn px-3 py-1.5 rounded-lg text-xs font-mono bg-slate-900/60 text-slate-300 border border-slate-800 hover:border-slate-700 flex items-center gap-1.5">
+                <span>😭</span>
+                <span>കരച്ചിൽ (CRY)</span>
+              </button>
+              <button data-emotion="LAUGH" class="sim-btn px-3 py-1.5 rounded-lg text-xs font-mono bg-slate-900/60 text-slate-300 border border-slate-800 hover:border-slate-700 flex items-center gap-1.5">
+                <span>🤣</span>
+                <span>ചിരിയോട് ചിരി (LAUGH)</span>
+              </button>
+              <button data-emotion="ANGRY" class="sim-btn px-3 py-1.5 rounded-lg text-xs font-mono bg-slate-900/60 text-slate-300 border border-slate-800 hover:border-slate-700 flex items-center gap-1.5">
+                <span>😡</span>
+                <span>കട്ടക്കലിപ്പ് (ANGRY)</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Arena Action Toolbar -->
+          <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+            <div class="flex items-center gap-2">
+              <button id="pauseToggleBtn" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-700 bg-slate-900/60 hover:bg-slate-800 text-slate-300 text-xs font-mono">
+                <span id="pauseBtnIcon">⏸</span>
+                <span id="pauseBtnLabel">Pause</span>
+              </button>
+              <button id="skipTargetBtn" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-700 bg-slate-900/60 hover:bg-slate-800 text-slate-300 text-xs font-mono">
+                <span class="text-violet-400">⏩</span>
+                <span>Skip Demand</span>
+              </button>
+              <button id="restartArenaBtn" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-700 bg-slate-900/60 hover:bg-slate-800 text-slate-300 text-xs font-mono">
+                <span class="text-cyan-400">🔄</span>
+                <span>Restart</span>
+              </button>
+            </div>
+
+            <button id="exitArenaBtn" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-rose-500/30 bg-rose-950/30 hover:bg-rose-900/40 text-rose-300 text-xs font-mono">
+              <span class="text-rose-400">⏻</span>
+              <span>Exit Arena</span>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Right Panel: Target Card with Meme Character & Meters (5 cols) -->
+        <div class="lg:col-span-5 flex flex-col gap-4">
+          
+          <!-- Target Expression Card With Dynamic Meme Poster -->
+          <div class="relative p-5 rounded-2xl glass-panel-amber border-2 border-amber-500/40 shadow-[0_0_30px_rgba(245,158,11,0.2)] overflow-hidden">
+            
+            <div class="flex items-start justify-between gap-3 mb-4">
+              <div class="flex items-center gap-3">
+                <!-- Dynamic Target Meme Image -->
+                <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden border-2 border-amber-400 shadow-[0_0_20px_rgba(245,158,11,0.35)] flex-shrink-0 bg-slate-950">
+                  <img id="targetMemeImg" src="assets/meme_vintage.jpg" alt="Target Meme" class="w-full h-full object-cover transition-all duration-500">
+                </div>
+
+                <div>
+                  <div class="flex items-center gap-2 mb-1">
+                    <span id="targetBadgeNum" class="px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase bg-amber-500/20 text-amber-300 border border-amber-500/40">
+                      DEMAND #1
+                    </span>
+                    <span id="targetDiffBadge" class="px-2 py-0.5 rounded text-[10px] font-mono uppercase bg-slate-900 text-slate-400 border border-slate-800">
+                      TARGET: SMILE
+                    </span>
+                  </div>
+
+                  <h3 id="targetNameMalayalam" class="text-2xl sm:text-3xl font-black font-malayalam text-amber-300 tracking-wide drop-shadow">
+                    ചിരി
+                  </h3>
+                  <div id="targetNameEnglish" class="text-sm font-display font-bold text-white tracking-wider uppercase">
+                    Demand: SMILE
+                  </div>
+                </div>
+              </div>
+
+              <!-- Animated Countdown Ring -->
+              <div class="relative flex items-center justify-center w-16 h-16 flex-shrink-0">
+                <svg class="w-16 h-16 transform -rotate-90">
+                  <circle cx="32" cy="32" r="26" class="stroke-slate-800" stroke-width="5" fill="transparent"></circle>
+                  <circle id="countdownRing" cx="32" cy="32" r="26" class="stroke-amber-400 transition-all duration-1000" stroke-width="5" stroke-linecap="round" fill="transparent" stroke-dasharray="163" stroke-dashoffset="0"></circle>
+                </svg>
+                <div class="absolute flex items-center justify-center">
+                  <span id="countdownNumber" class="text-base font-black font-mono text-white">10s</span>
+                </div>
+              </div>
+            </div>
+
+            <p id="targetDescription" class="text-xs text-slate-300 font-light mb-4">
+              Hold the expression steadily for 1 second to trigger the AI roast!
+            </p>
+
+            <!-- Hold verification bar -->
+            <div>
+              <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 mb-1.5">
+                <span>HOLD PROGRESS (1.0s)</span>
+                <span id="holdVerificationPct" class="text-cyan-400 font-bold">0% / 100%</span>
+              </div>
+              <div class="w-full h-2.5 rounded-full bg-slate-900 border border-slate-800 overflow-hidden">
+                <div id="holdProgressBar" class="h-full bg-gradient-to-r from-cyan-500 via-amber-400 to-emerald-400 transition-all duration-75 shadow-[0_0_10px_rgba(0,240,255,0.5)]" style="width: 0%;"></div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Real-time Score Meter Circular Gauge -->
+          <div class="glass-panel p-5 rounded-2xl border-cyan-500/25">
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs font-mono font-bold tracking-wider uppercase text-cyan-400 flex items-center gap-1.5">
+                <span>🛡️</span>
+                <span>AI MATCH CONFIDENCE</span>
+              </span>
+              <span id="scoreThresholdText" class="text-xs font-mono text-slate-400">
+                MATCH: ≥ 60%
+              </span>
+            </div>
+
+            <div class="flex items-center gap-6">
+              
+              <!-- Circular Progress Gauge -->
+              <div class="relative w-28 h-28 flex items-center justify-center flex-shrink-0">
+                <svg class="w-28 h-28 transform -rotate-90">
+                  <circle cx="56" cy="56" r="46" class="stroke-slate-800" stroke-width="8" fill="transparent"></circle>
+                  <circle id="scoreGaugeRing" cx="56" cy="56" r="46" class="stroke-violet-500 transition-all duration-200" stroke-width="8" stroke-linecap="round" fill="transparent" stroke-dasharray="289" stroke-dashoffset="289"></circle>
+                </svg>
+                <div class="absolute flex flex-col items-center justify-center text-center">
+                  <span id="scoreGaugePct" class="text-2xl font-black font-display text-white">0%</span>
+                  <span id="scoreGaugeStatus" class="text-[9px] font-mono uppercase text-slate-400">SCANNING</span>
+                </div>
+              </div>
+
+              <!-- Status Feedback -->
+              <div class="flex-1">
+                <div class="text-xs font-mono text-slate-400 mb-1">DETECTION STATUS:</div>
+                <div id="scoreFeedbackTitle" class="text-base font-bold font-display uppercase tracking-wider mb-2 text-slate-400">
+                  WAITING FOR DEMAND
+                </div>
+                <div id="scoreFeedbackDetail" class="text-xs font-light text-slate-300">
+                  Show expression to trigger the roast response!
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- 5-Axis Biometric Confidence Tickers -->
+          <div class="glass-panel p-5 rounded-2xl border-cyan-500/20">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-mono font-bold tracking-wider uppercase text-slate-300">
+                MEDIAPIPE BLENDSHAPES (LIVE)
+              </span>
+              <span class="text-[10px] font-mono text-cyan-400 animate-pulse">
+                FACIAL TELEMETRY
+              </span>
+            </div>
+
+            <div class="space-y-3">
+              
+              <!-- Smile -->
+              <div>
+                <div class="flex justify-between text-xs font-mono text-slate-300 mb-1">
+                  <span class="flex items-center gap-1.5">
+                    <span>😄</span>
+                    <span>Smile Intensity</span>
+                    <span id="badgeKeySmile" class="text-[9px] px-1 py-0.2 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">KEY</span>
+                  </span>
+                  <span id="valSmile" class="text-cyan-400 font-bold">0%</span>
+                </div>
+                <div class="w-full h-2 rounded-full bg-slate-900 border border-slate-800 overflow-hidden">
+                  <div id="barSmile" class="h-full bg-cyan-400 transition-all duration-100 shadow-[0_0_8px_#00f0ff]" style="width: 0%;"></div>
+                </div>
+              </div>
+
+              <!-- Mouth Open -->
+              <div>
+                <div class="flex justify-between text-xs font-mono text-slate-300 mb-1">
+                  <span class="flex items-center gap-1.5">
+                    <span>😲</span>
+                    <span>Mouth Aperture</span>
+                    <span id="badgeKeyMouth" class="hidden text-[9px] px-1 py-0.2 rounded bg-violet-500/20 text-violet-300 border border-violet-500/30">KEY</span>
+                  </span>
+                  <span id="valMouth" class="text-violet-400 font-bold">0%</span>
+                </div>
+                <div class="w-full h-2 rounded-full bg-slate-900 border border-slate-800 overflow-hidden">
+                  <div id="barMouth" class="h-full bg-violet-500 transition-all duration-100 shadow-[0_0_8px_#a855f7]" style="width: 0%;"></div>
+                </div>
+              </div>
+
+              <!-- Brow Raise -->
+              <div>
+                <div class="flex justify-between text-xs font-mono text-slate-300 mb-1">
+                  <span class="flex items-center gap-1.5">
+                    <span>🤨</span>
+                    <span>Eyebrow Arch</span>
+                    <span id="badgeKeyBrow" class="hidden text-[9px] px-1 py-0.2 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">KEY</span>
+                  </span>
+                  <span id="valBrow" class="text-sky-400 font-bold">0%</span>
+                </div>
+                <div class="w-full h-2 rounded-full bg-slate-900 border border-slate-800 overflow-hidden">
+                  <div id="barBrow" class="h-full bg-sky-400 transition-all duration-100 shadow-[0_0_8px_#38bdf8]" style="width: 0%;"></div>
+                </div>
+              </div>
+
+              <!-- Fierce -->
+              <div>
+                <div class="flex justify-between text-xs font-mono text-slate-300 mb-1">
+                  <span class="flex items-center gap-1.5">
+                    <span>😡</span>
+                    <span>Fierce Furrow</span>
+                    <span id="badgeKeyFierce" class="hidden text-[9px] px-1 py-0.2 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30">KEY</span>
+                  </span>
+                  <span id="valFierce" class="text-rose-400 font-bold">0%</span>
+                </div>
+                <div class="w-full h-2 rounded-full bg-slate-900 border border-slate-800 overflow-hidden">
+                  <div id="barFierce" class="h-full bg-rose-500 transition-all duration-100 shadow-[0_0_8px_#f43f5e]" style="width: 0%;"></div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- 3. RESULTS & LEADERBOARD MODAL -->
+    <div id="resultsModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-xl overflow-y-auto">
+      
+      <div class="relative w-full max-w-3xl my-8 p-6 sm:p-8 rounded-3xl glass-panel border-2 border-cyan-500/40 shadow-[0_0_60px_rgba(0,240,255,0.2)] bg-[#070b18]">
+        
+        <!-- Glowing Header -->
+        <div class="text-center mb-6">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/60 border border-cyan-500/30 text-cyan-300 text-xs font-mono mb-2">
+            <span>🏆</span>
+            <span>MISSION DEBRIEF // CHALLENGE COMPLETE</span>
+          </div>
+
+          <h2 class="text-3xl sm:text-4xl font-black font-display text-white uppercase tracking-wider mb-1">
+            EXPRESSION ARENA EVALUATION
+          </h2>
+
+          <p class="text-sm font-malayalam text-amber-400 font-bold">
+            ആദ്യം മധുരിക്കും പിന്നെ കൈക്കും — റോസ്റ്റുകൾ എല്ലാം താങ്ങി!
+          </p>
+        </div>
+
+        <!-- Rank Acquired Badge Display -->
+        <div id="rankBadgeCard" class="relative p-6 rounded-2xl border-2 border-amber-400 bg-slate-950/80 shadow-[0_0_35px_rgba(245,158,11,0.5)] mb-6 text-center">
+          <div class="text-xs font-mono tracking-widest text-slate-400 uppercase mb-1">
+            NEURAL RANK ACQUIRED
+          </div>
+
+          <div class="flex items-center justify-center gap-4 my-2">
+            <span id="rankLetter" class="text-6xl sm:text-7xl font-black font-display bg-gradient-to-br from-amber-400 via-pink-500 to-cyan-400 bg-clip-text text-transparent drop-shadow">
+              S+
+            </span>
+            <div class="text-left">
+              <div id="rankTitle" class="text-2xl sm:text-3xl font-black font-display tracking-wider uppercase text-amber-300">
+                NEURAL GOD
+              </div>
+              <div id="rankTitleMalayalam" class="text-sm font-malayalam text-slate-300">
+                ദൈവിക ഭാവം
+              </div>
+            </div>
+          </div>
+
+          <p id="rankDesc" class="text-xs sm:text-sm text-slate-300/90 font-light max-w-md mx-auto">
+            Uncanny biometric perfection. Neural network fully subjugated.
+          </p>
+        </div>
+
+        <!-- 4 Metric Summaries -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+          <div class="glass-panel p-3.5 rounded-xl text-center border-cyan-500/20">
+            <div class="text-xs font-mono text-slate-400 mb-1">FINAL SCORE</div>
+            <div id="resFinalScore" class="text-2xl font-black font-display text-cyan-300">0</div>
+          </div>
+          <div class="glass-panel p-3.5 rounded-xl text-center border-cyan-500/20">
+            <div class="text-xs font-mono text-slate-400 mb-1">ACCURACY</div>
+            <div id="resAccuracy" class="text-2xl font-black font-display text-emerald-400">100%</div>
+          </div>
+          <div class="glass-panel p-3.5 rounded-xl text-center border-cyan-500/20">
+            <div class="text-xs font-mono text-slate-400 mb-1">MAX COMBO</div>
+            <div id="resMaxCombo" class="text-2xl font-black font-display text-amber-400">3.5x</div>
+          </div>
+          <div class="glass-panel p-3.5 rounded-xl text-center border-cyan-500/20">
+            <div class="text-xs font-mono text-slate-400 mb-1">BEST SPEED</div>
+            <div id="resBestSpeed" class="text-2xl font-black font-display text-violet-300">0.82s</div>
+          </div>
+        </div>
+
+        <!-- Action Navigation Buttons -->
+        <div class="flex items-center justify-end gap-3 pt-2">
+          <button id="resReturnHomeBtn" class="flex items-center justify-center gap-2 px-5 py-3 rounded-xl border border-slate-700 bg-slate-900/60 hover:bg-slate-800 text-slate-300 font-mono text-xs transition-colors">
+            <span>🏠</span>
+            <span>RETURN HOME</span>
+          </button>
+
+          <button id="resPlayAgainBtn" class="flex items-center justify-center gap-2 px-7 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-display font-black text-sm tracking-wider uppercase shadow-[0_0_25px_rgba(0,240,255,0.4)] transition-all transform hover:scale-105 active:scale-95">
+            <span>🔄</span>
+            <span>PLAY AGAIN</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="relative z-20 border-t border-cyan-500/10 bg-[#05070f]/90 py-3 px-4 text-center text-xs font-mono text-slate-500">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+      <div class="flex items-center gap-2">
+        <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+        <span>ADYM MADHURIKUM PINNE KAIYKUM // ആദ്യം മധുരിക്കും പിന്നെ കൈക്കും</span>
+      </div>
+      <div class="text-slate-400 font-light">
+        MediaPipe Emotion Detector + Malayalam Voice Roast Engine
+      </div>
+    </div>
+  </footer>
+
+  <!-- Core App Logic & Emotion Game Integration -->
+  <script>
+    /* ==========================================================================
+       1. WEB AUDIO API SYNTHESIZER
+       ========================================================================== */
+    class CyberSoundEngine {
+      constructor() {
+        this.ctx = null;
+        this.isMuted = false;
+      }
+      init() {
+        if (!this.ctx && (window.AudioContext || window.webkitAudioContext)) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioCtx();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+      toggleMute() {
+        this.isMuted = !this.isMuted;
+        return this.isMuted;
+      }
+      playClick(freq = 880) {
+        if (this.isMuted) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(freq * 1.5, this.ctx.currentTime + 0.04);
+          gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.05);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.05);
+        } catch(e) {}
+      }
+      playTick(urgent = false) {
+        if (this.isMuted) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(urgent ? 1320 : 960, this.ctx.currentTime);
+          gain.gain.setValueAtTime(urgent ? 0.12 : 0.06, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.06);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.06);
+        } catch(e) {}
+      }
+      playTargetLock() {
+        if (this.isMuted) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          [523.25, 659.25, 783.99, 1046.5].forEach((freq, idx) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sawtooth';
+            const t = this.ctx.currentTime + idx * 0.06;
+            osc.frequency.setValueAtTime(freq, t);
+            gain.gain.setValueAtTime(0.1, t);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.22);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(t);
+            osc.stop(t + 0.24);
+          });
+        } catch(e) {}
+      }
+      playComboRiser(multiplier = 1.5) {
+        if (this.isMuted) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          const baseFreq = 320 + Math.min(multiplier * 180, 1500);
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(baseFreq, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(baseFreq * 1.8, this.ctx.currentTime + 0.28);
+          gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.3);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.3);
+        } catch(e) {}
+      }
+      playGameOver() {
+        if (this.isMuted) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          [440, 554.37, 659.25, 830.61].forEach(freq => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+            gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 1.2);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start();
+            osc.stop(this.ctx.currentTime + 1.25);
+          });
+        } catch(e) {}
+      }
+    }
+    const cyberSound = new CyberSoundEngine();
+
+    /* ==========================================================================
+       2. CANVAS AMBIENT PARTICLES
+       ========================================================================== */
+    const bgCanvas = document.getElementById('bgCanvas');
+    const bgCtx = bgCanvas.getContext('2d');
+    let width = (bgCanvas.width = window.innerWidth);
+    let height = (bgCanvas.height = window.innerHeight);
+
+    window.addEventListener('resize', () => {
+      width = bgCanvas.width = window.innerWidth;
+      height = bgCanvas.height = window.innerHeight;
+    });
+
+    const particles = [];
+    const colors = ['rgba(0, 240, 255, ', 'rgba(168, 85, 247, ', 'rgba(245, 158, 11, ', 'rgba(56, 189, 248, '];
+    for (let i = 0; i < 40; i++) {
+      particles.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        r: Math.random() * 2 + 0.8,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        alpha: Math.random() * 0.6 + 0.2,
+        vx: (Math.random() - 0.5) * 0.35,
+        vy: -Math.random() * 0.45 - 0.15,
+        pulseSpeed: Math.random() * 0.02 + 0.01,
+        pulseOffset: Math.random() * Math.PI * 2
+      });
+    }
+
+    let bgTick = 0;
+    function renderBg() {
+      bgTick++;
+      bgCtx.clearRect(0, 0, width, height);
+
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.y < -10) { p.y = height + 10; p.x = Math.random() * width; }
+        if (p.x < -10) p.x = width + 10;
+        if (p.x > width + 10) p.x = -10;
+
+        const currentAlpha = p.alpha * (0.7 + 0.3 * Math.sin(bgTick * p.pulseSpeed + p.pulseOffset));
+        bgCtx.beginPath();
+        bgCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        bgCtx.fillStyle = `${p.color}${currentAlpha})`;
+        bgCtx.fill();
+
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const dx = p.x - p2.x;
+          const dy = p.y - p2.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 110) {
+            bgCtx.beginPath();
+            bgCtx.moveTo(p.x, p.y);
+            bgCtx.lineTo(p2.x, p2.y);
+            bgCtx.strokeStyle = `rgba(0, 240, 255, ${(1 - dist / 110) * 0.15})`;
+            bgCtx.lineWidth = 0.8;
+            bgCtx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(renderBg);
+    }
+    renderBg();
+
+    /* ==========================================================================
+       3. EMOTION DEMANDS CONFIGURATION WITH MEME IMAGES
+       ========================================================================== */
+    const DEMAND_LIST = ['SMILE', 'CRY', 'LAUGH', 'ANGRY'];
+    const DEMANDS_DATA = {
+      SMILE: {
+        id: 'SMILE',
+        nameMalayalam: 'ചിരി',
+        nameEnglish: 'Demand: WIDE SMILE',
+        icon: '😄',
+        memeImg: 'assets/meme_vintage.jpg',
+        metric: 'smileIntensity',
+        threshold: 60,
+        tip: 'Flash a wide grin with visible teeth!'
+      },
+      CRY: {
+        id: 'CRY',
+        nameMalayalam: 'കരച്ചിൽ',
+        nameEnglish: 'Demand: CRY & WEEP',
+        icon: '😭',
+        memeImg: 'assets/meme_aniya.jpg',
+        metric: 'mouthOpen',
+        threshold: 30,
+        tip: 'Turn mouth corners down & look sad!'
+      },
+      LAUGH: {
+        id: 'LAUGH',
+        nameMalayalam: 'അട്ടഹാസം',
+        nameEnglish: 'Demand: LAUGH / SHOCK',
+        icon: '😲',
+        memeImg: 'assets/meme_sadhanam.jpg',
+        metric: 'smileIntensity',
+        threshold: 65,
+        tip: 'Drop jaw wide and look shocked or laughing!'
+      },
+      ANGRY: {
+        id: 'ANGRY',
+        nameMalayalam: 'കട്ടക്കലിപ്പ്',
+        nameEnglish: 'Demand: FIERCE ANGER',
+        icon: '😡',
+        memeImg: 'assets/meme_shaji.jpg',
+        metric: 'fierceIntensity',
+        threshold: 55,
+        tip: 'Furrow your eyebrows fiercely together!'
+      }
+    };
+
+    /* ==========================================================================
+       4. GAME STATE & DOM REFERENCES
+       ========================================================================== */
+    let gameState = 'hero';
+    let gameMode = 'classic';
+    let roundIndex = 0;
+    let totalScore = 0;
+    let comboMultiplier = 1.0;
+    let comboStreak = 0;
+    let maxComboStreak = 1;
+    let isPaused = false;
+    let roundTimeLimit = 10;
+    let timeLeft = 10;
+    let matchHoldTimer = 0;
+    let history = [];
+    let isSuccessLocked = false;
+    let timerInterval = null;
+
+    let backgroundDemand = 'SMILE'; 
+    let detector = new EmotionDetector({ voiceEnabled: true });
+
+    // DOM Elements
+    const heroScreen = document.getElementById('heroScreen');
+    const arenaScreen = document.getElementById('arenaScreen');
+    const resultsModal = document.getElementById('resultsModal');
+    const pauseOverlay = document.getElementById('pauseOverlay');
+
+    const arenaTotalScore = document.getElementById('arenaTotalScore');
+    const arenaComboText = document.getElementById('arenaComboText');
+    const arenaRoundText = document.getElementById('arenaRoundText');
+    const comboCard = document.getElementById('comboCard');
+
+    const targetBadgeNum = document.getElementById('targetBadgeNum');
+    const targetDiffBadge = document.getElementById('targetDiffBadge');
+    const targetNameMalayalam = document.getElementById('targetNameMalayalam');
+    const targetNameEnglish = document.getElementById('targetNameEnglish');
+    const targetDescription = document.getElementById('targetDescription');
+    const targetMemeImg = document.getElementById('targetMemeImg');
+    const roastMemeAvatar = document.getElementById('roastMemeAvatar');
+
+    const countdownNumber = document.getElementById('countdownNumber');
+    const countdownRing = document.getElementById('countdownRing');
+    const holdProgressBar = document.getElementById('holdProgressBar');
+    const holdVerificationPct = document.getElementById('holdVerificationPct');
+
+    const scoreThresholdText = document.getElementById('scoreThresholdText');
+    const scoreGaugeRing = document.getElementById('scoreGaugeRing');
+    const scoreGaugePct = document.getElementById('scoreGaugePct');
+    const scoreGaugeStatus = document.getElementById('scoreGaugeStatus');
+    const scoreFeedbackTitle = document.getElementById('scoreFeedbackTitle');
+    const scoreFeedbackDetail = document.getElementById('scoreFeedbackDetail');
+    const targetLockBadge = document.getElementById('targetLockBadge');
+    const targetLockText = document.getElementById('targetLockText');
+    const hudMatchBanner = document.getElementById('hudMatchBanner');
+    const detectedEmotionLabel = document.getElementById('detectedEmotionLabel');
+
+    const roastSpeechBanner = document.getElementById('roastSpeechBanner');
+    const roastSpeechText = document.getElementById('roastSpeechText');
+
+    const valSmile = document.getElementById('valSmile');
+    const barSmile = document.getElementById('barSmile');
+    const valMouth = document.getElementById('valMouth');
+    const barMouth = document.getElementById('barMouth');
+    const valBrow = document.getElementById('valBrow');
+    const barBrow = document.getElementById('barBrow');
+    const valFierce = document.getElementById('valFierce');
+    const barFierce = document.getElementById('barFierce');
+
+    const badgeKeySmile = document.getElementById('badgeKeySmile');
+    const badgeKeyMouth = document.getElementById('badgeKeyMouth');
+    const badgeKeyBrow = document.getElementById('badgeKeyBrow');
+    const badgeKeyFierce = document.getElementById('badgeKeyFierce');
+
+    const video = document.getElementById('webcam');
+    const hologramBackdrop = document.getElementById('hologramBackdrop');
+    const faceCanvas = document.getElementById('faceCanvas');
+    const faceCtx = faceCanvas.getContext('2d');
+    const toggleCameraBtn = document.getElementById('toggleCameraBtn');
+    const camModeText = document.getElementById('camModeText');
+
+    /* ==========================================================================
+       5. CORE EMOTION GAME INITIALIZATION
+       ========================================================================== */
+    async function initEmotionGame() {
+      if (!detector) {
+        detector = new EmotionDetector({ voiceEnabled: true });
+      }
+
+      video.classList.remove('opacity-0', 'pointer-events-none');
+      video.style.opacity = '1';
+      video.style.display = 'block';
+      hologramBackdrop.classList.add('hidden');
+      camModeText.textContent = 'LIVE WEBCAM ACTIVE';
+      toggleCameraBtn.textContent = 'AI HOLOGRAM';
+
+      await detector.start(video, (result) => {
+        if (!result || gameState !== 'arena' || isPaused) return;
+
+        if (result.landmarks) {
+          video.classList.remove('opacity-0', 'pointer-events-none');
+          video.style.opacity = '1';
+          video.style.display = 'block';
+          hologramBackdrop.classList.add('hidden');
+          renderMediaPipeLandmarks(result.landmarks);
+        }
+
+        if (result.blendshapes) {
+          updateBlendshapeTickers(result.blendshapes);
+        }
+
+        detectedEmotionLabel.textContent = `DETECTED: ${result.emotion || 'NONE'}`;
+
+        // Controlled hold verification (prevents rapid fast-forwarding!)
+        if (result.emotion === backgroundDemand && !isSuccessLocked) {
+          matchHoldTimer += 0.045; // ~1.0 second needed
+          const pct = Math.min(100, Math.round((matchHoldTimer / 1.0) * 100));
+          holdProgressBar.style.width = `${pct}%`;
+          holdVerificationPct.textContent = `${pct}% / 100%`;
+
+          if (matchHoldTimer >= 1.0) {
+            handleEmotionMatch(backgroundDemand);
+          }
+        } else if (!isSuccessLocked) {
+          matchHoldTimer = Math.max(0, matchHoldTimer - 0.03);
+          const pct = Math.min(100, Math.round((matchHoldTimer / 1.0) * 100));
+          holdProgressBar.style.width = `${pct}%`;
+          holdVerificationPct.textContent = `${pct}% / 100%`;
+        }
+      });
+    }
+
+    function handleEmotionMatch(matchedDemand) {
+      isSuccessLocked = true;
+      cyberSound.playTargetLock();
+
+      const roast = detector.speakOppositeRoast(matchedDemand, true);
+
+      // Display roast visually with matching meme avatar!
+      const activeData = DEMANDS_DATA[matchedDemand];
+      if (activeData && activeData.memeImg) {
+        roastMemeAvatar.src = activeData.memeImg;
+      }
+      roastSpeechText.textContent = `"${roast.ml}"`;
+      roastSpeechBanner.classList.remove('hidden');
+
+      const speedBonus = Math.max(0, timeLeft * 30);
+      const earned = Math.floor((1000 + speedBonus) * comboMultiplier);
+      totalScore += earned;
+      arenaTotalScore.textContent = totalScore.toLocaleString();
+
+      comboStreak++;
+      maxComboStreak = Math.max(maxComboStreak, comboStreak);
+      comboMultiplier = Math.min(5.0, Number((1.0 + comboStreak * 0.5).toFixed(1)));
+      arenaComboText.innerHTML = `${comboMultiplier.toFixed(1)}x <span class="text-xs px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300">+${comboStreak}</span>`;
+      comboCard.className = 'glass-panel p-3 rounded-xl flex items-center gap-3 border-amber-500/50 shadow-[0_0_20px_rgba(245,158,11,0.25)] transition-all';
+      cyberSound.playComboRiser(comboMultiplier);
+
+      scoreGaugeRing.setAttribute('class', 'stroke-emerald-400 transition-all duration-200');
+      scoreGaugePct.textContent = '100%';
+      scoreGaugeStatus.textContent = 'MATCHED!';
+      scoreFeedbackTitle.textContent = '⚡ DEMAND MATCHED & ROASTED!';
+      scoreFeedbackTitle.className = 'text-base font-bold font-display uppercase tracking-wider mb-2 text-emerald-400 neon-text-emerald';
+      scoreFeedbackDetail.textContent = roast.ml;
+
+      hudMatchBanner.innerHTML = `<span class="text-emerald-400 font-bold text-sm">⚡ ROAST TRIGGERED! (+${earned} PTS)</span>`;
+      hudMatchBanner.className = 'px-4 py-1.5 rounded-xl bg-emerald-950/90 border border-emerald-400 text-emerald-300 font-mono shadow-[0_0_20px_rgba(16,185,129,0.5)]';
+
+      setTimeout(() => {
+        roastSpeechBanner.classList.add('hidden');
+        advanceToNextDemand(true, earned, Number((roundTimeLimit - timeLeft).toFixed(1)));
+      }, 2500);
+    }
+
+    function advanceToNextDemand(success, earned = 0, reactionTime = 0) {
+      const activeData = DEMANDS_DATA[backgroundDemand];
+      history.push({ target: activeData, score: success ? earned : 0, reactionTime, success });
+
+      const maxRounds = gameMode === 'blitz' ? 8 : 5;
+      if (roundIndex + 1 >= maxRounds && gameMode !== 'zen') {
+        endGame();
+        return;
+      }
+
+      roundIndex++;
+
+      const remainingDemands = DEMAND_LIST.filter(d => d !== backgroundDemand);
+      backgroundDemand = remainingDemands[Math.floor(Math.random() * remainingDemands.length)];
+
+      updateDemandCard();
+    }
+
+    function updateDemandCard() {
+      const data = DEMANDS_DATA[backgroundDemand];
+      targetBadgeNum.textContent = `DEMAND #${roundIndex + 1}`;
+      targetDiffBadge.textContent = `TARGET: ${data.id}`;
+      targetNameMalayalam.textContent = `${data.icon} ${data.nameMalayalam}`;
+      targetNameEnglish.textContent = data.nameEnglish;
+      targetDescription.textContent = data.tip;
+      scoreThresholdText.textContent = `MATCH: ≥ ${data.threshold}%`;
+
+      // Update dynamic target meme image in the card!
+      if (targetMemeImg && data.memeImg) {
+        targetMemeImg.src = data.memeImg;
+      }
+
+      // Highlight active background quadrant in the full-cover wallpaper!
+      const quadMap = {
+        SMILE: document.getElementById('bgQuadSmile'),
+        LAUGH: document.getElementById('bgQuadLaugh'),
+        ANGRY: document.getElementById('bgQuadAngry'),
+        CRY:   document.getElementById('bgQuadCry')
+      };
+      Object.entries(quadMap).forEach(([k, el]) => {
+        if (!el) return;
+        if (k === backgroundDemand) {
+          el.className = 'relative w-full h-full overflow-hidden border-2 border-cyan-400 shadow-[inset_0_0_50px_rgba(0,240,255,0.5)] transition-all duration-700 opacity-80 scale-[1.02] z-[1]';
+        } else {
+          el.className = 'relative w-full h-full overflow-hidden transition-all duration-700 opacity-25 scale-100 z-0';
+        }
+      });
+
+      badgeKeySmile.classList.toggle('hidden', data.metric !== 'smileIntensity');
+      badgeKeyMouth.classList.toggle('hidden', data.metric !== 'mouthOpen');
+      badgeKeyBrow.classList.toggle('hidden', data.metric !== 'browRaise');
+      badgeKeyFierce.classList.toggle('hidden', data.metric !== 'fierceIntensity');
+
+      arenaRoundText.textContent = gameMode === 'zen' ? `#${roundIndex + 1}` : `${roundIndex + 1} / 5`;
+
+      timeLeft = roundTimeLimit;
+      countdownNumber.textContent = `${timeLeft}s`;
+      countdownRing.style.strokeDashoffset = '0';
+      countdownRing.setAttribute('class', 'stroke-amber-400 transition-all duration-1000');
+      matchHoldTimer = 0;
+      holdProgressBar.style.width = '0%';
+      holdVerificationPct.textContent = '0% / 100%';
+      isSuccessLocked = false;
+
+      // Announce and speak the demand aloud for this task!
+      if (detector && gameState === 'arena' && !isPaused) {
+        detector.speakDemand(backgroundDemand, roundIndex + 1);
+      }
+    }
+
+    function updateBlendshapeTickers(m) {
+      valSmile.textContent = `${m.smileIntensity}%`;
+      barSmile.style.width = `${m.smileIntensity}%`;
+      valMouth.textContent = `${m.mouthOpen}%`;
+      barMouth.style.width = `${m.mouthOpen}%`;
+      valBrow.textContent = `${m.browRaise}%`;
+      barBrow.style.width = `${m.browRaise}%`;
+      valFierce.textContent = `${m.fierceIntensity}%`;
+      barFierce.style.width = `${m.fierceIntensity}%`;
+
+      const activeData = DEMANDS_DATA[backgroundDemand];
+      const primaryScore = m[activeData.metric] || 0;
+      scoreGaugePct.textContent = `${primaryScore}%`;
+      const circumference = 2 * Math.PI * 46;
+      scoreGaugeRing.style.strokeDashoffset = circumference * (1 - primaryScore / 100);
+      scoreGaugeRing.setAttribute('class', primaryScore >= activeData.threshold ? 'stroke-emerald-400 transition-all duration-200' : 'stroke-cyan-400 transition-all duration-200');
+    }
+
+    function renderMediaPipeLandmarks(landmarks) {
+      faceCtx.clearRect(0, 0, faceCanvas.width, faceCanvas.height);
+      
+      const getCoords = (idx) => {
+        const pt = landmarks[idx];
+        if (!pt) return null;
+        return { x: (1 - pt.x) * faceCanvas.width, y: pt.y * faceCanvas.height };
+      };
+
+      const lipIndices = [61, 146, 91, 181, 84, 17, 314, 405, 321, 375, 291];
+      faceCtx.beginPath();
+      let first = true;
+      lipIndices.forEach(idx => {
+        const c = getCoords(idx);
+        if (c) {
+          if (first) { faceCtx.moveTo(c.x, c.y); first = false; }
+          else { faceCtx.lineTo(c.x, c.y); }
+        }
+      });
+      faceCtx.strokeStyle = 'rgba(0, 240, 255, 0.45)';
+      faceCtx.lineWidth = 1.5;
+      faceCtx.stroke();
+
+      faceCtx.fillStyle = '#00f0ff';
+      const sampleIndices = [10, 338, 297, 332, 284, 251, 389, 356, 454, 323, 361, 288, 397, 365, 379, 378, 400, 377, 152, 148, 176, 149, 150, 136, 172, 58, 132, 93, 234, 127, 162, 21, 54, 103, 67, 109, 61, 146, 91, 181, 84, 17, 314, 405, 321, 375, 291, 70, 63, 105, 66, 107, 336, 296, 334, 293, 300, 159, 145, 386, 374, 1];
+
+      sampleIndices.forEach(idx => {
+        const c = getCoords(idx);
+        if (c) {
+          faceCtx.beginPath();
+          faceCtx.arc(c.x, c.y, 2.2, 0, Math.PI * 2);
+          faceCtx.fill();
+        }
+      });
+    }
+
+    /* ==========================================================================
+       6. TIMER & ROUND MANAGEMENT
+       ========================================================================== */
+    function startTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        if (isPaused || isSuccessLocked || gameState !== 'arena') return;
+
+        timeLeft--;
+        countdownNumber.textContent = `${timeLeft}s`;
+        const circumference = 2 * Math.PI * 46;
+        countdownRing.style.strokeDashoffset = circumference - (timeLeft / roundTimeLimit) * circumference;
+
+        if (timeLeft <= 3) {
+          cyberSound.playTick(true);
+          countdownRing.setAttribute('class', 'stroke-rose-500 transition-all duration-1000');
+          countdownNumber.className = 'text-xl font-black font-mono text-rose-400 animate-ping';
+        } else {
+          countdownNumber.className = 'text-xl font-black font-mono text-white';
+        }
+
+        if (timeLeft <= 0) {
+          cyberSound.playTick(true);
+          comboMultiplier = 1.0;
+          comboStreak = 0;
+          arenaComboText.textContent = '1.0x';
+          comboCard.className = 'glass-panel p-3 rounded-xl flex items-center gap-3 border-cyan-500/20 transition-all';
+
+          // Trigger failure roast aloud!
+          if (detector) {
+            const failRoast = detector.speakOppositeRoast(backgroundDemand, false);
+            const activeData = DEMANDS_DATA[backgroundDemand];
+            if (activeData && activeData.memeImg) {
+              roastMemeAvatar.src = activeData.memeImg;
+            }
+            roastSpeechText.textContent = `"${failRoast.ml}"`;
+            roastSpeechBanner.classList.remove('hidden');
+            hudMatchBanner.innerHTML = `<span class="text-rose-400 font-bold text-xs">⚠️ TIMEOUT! MISSED DEMAND!</span>`;
+            hudMatchBanner.className = 'px-4 py-1.5 rounded-xl bg-rose-950/90 border border-rose-500 text-rose-300 font-mono shadow-[0_0_20px_rgba(244,63,94,0.4)]';
+            setTimeout(() => roastSpeechBanner.classList.add('hidden'), 2500);
+          }
+
+          advanceToNextDemand(false, 0, roundTimeLimit);
+        }
+      }, 1000);
+    }
+
+    function startGame() {
+      // Unstick and resume Web Speech API and Web Audio Context
+      if (typeof window !== 'undefined' && window.speechSynthesis) {
+        window.speechSynthesis.resume();
+      }
+      cyberSound.init();
+      if (detector) {
+        detector.options.voiceEnabled = true;
+      }
+
+      gameState = 'arena';
+      heroScreen.classList.add('hidden');
+      arenaScreen.classList.remove('hidden');
+      resultsModal.classList.add('hidden');
+      roastSpeechBanner.classList.add('hidden');
+
+      roundIndex = 0;
+      totalScore = 0;
+      comboMultiplier = 1.0;
+      comboStreak = 0;
+      maxComboStreak = 1;
+      history = [];
+      isPaused = false;
+      roundTimeLimit = gameMode === 'blitz' ? 8 : 10;
+      backgroundDemand = 'SMILE';
+
+      arenaTotalScore.textContent = '0';
+      arenaComboText.textContent = '1.0x';
+
+      updateDemandCard();
+      startTimer();
+      initEmotionGame();
+    }
+
+    function endGame() {
+      gameState = 'results';
+      if (timerInterval) clearInterval(timerInterval);
+      cyberSound.playGameOver();
+
+      arenaScreen.classList.add('hidden');
+      resultsModal.classList.remove('hidden');
+
+      const successes = history.filter(h => h.success).length;
+      const total = history.length || 1;
+      const acc = Math.round((successes / total) * 100);
+      const bestTime = successes > 0 ? Math.min(...history.filter(h => h.success).map(h => h.reactionTime || 99)).toFixed(2) : 'N/A';
+
+      document.getElementById('resFinalScore').textContent = totalScore.toLocaleString();
+      document.getElementById('resAccuracy').textContent = `${acc}%`;
+      document.getElementById('resMaxCombo').textContent = `${maxComboStreak.toFixed(1)}x`;
+      document.getElementById('resBestSpeed').textContent = `${bestTime}s`;
+
+      if (totalScore >= 1500 && window.confetti) {
+        confetti({ particleCount: 90, spread: 80, origin: { y: 0.6 } });
+      }
+
+      let rank = 'C', title = 'BIO RUST', malTitle = 'തുരുമ്പിച്ച മുഖം', desc = 'Stiff facial reflexes. Loosen those muscles!', border = 'border-slate-600', shadow = 'shadow-[0_0_20px_rgba(100,116,139,0.3)]', col = 'from-slate-400 to-slate-600', textCol = 'text-slate-400';
+      if (totalScore >= 6000) {
+        rank = 'S+'; title = 'NEURAL GOD'; malTitle = 'ദൈവിക ഭാവം'; desc = 'Uncanny biometric perfection. Neural network fully subjugated.'; border = 'border-amber-400'; shadow = 'shadow-[0_0_35px_rgba(245,158,11,0.5)]'; col = 'from-amber-400 via-pink-500 to-cyan-400'; textCol = 'text-amber-300';
+      } else if (totalScore >= 4000) {
+        rank = 'S'; title = 'CYBER DEVIANT'; malTitle = 'സൈബർ മാസ്റ്റർ'; desc = 'Superhuman facial control and lightning-fast reflex responses.'; border = 'border-cyan-400'; shadow = 'shadow-[0_0_30px_rgba(0,240,255,0.4)]'; col = 'from-cyan-400 to-violet-500'; textCol = 'text-cyan-300';
+      } else if (totalScore >= 2500) {
+        rank = 'A'; title = 'SYNTHETIC MIMIC'; malTitle = 'മിടുക്കൻ ഏജന്റ്'; desc = 'Strong emotional synchronization with the AI targeting system.'; border = 'border-violet-400'; shadow = 'shadow-[0_0_25px_rgba(168,85,247,0.3)]'; col = 'from-violet-400 to-purple-500'; textCol = 'text-violet-300';
+      } else if (totalScore >= 1000) {
+        rank = 'B'; title = 'GLITCH NOVICE'; malTitle = 'തുടക്കക്കാരൻ'; desc = 'Competent expression tracking. Requires faster eyebrow activation.'; border = 'border-blue-400'; shadow = 'shadow-[0_0_20px_rgba(59,130,246,0.3)]'; col = 'from-blue-400 to-slate-500'; textCol = 'text-blue-300';
+      }
+
+      const badgeCard = document.getElementById('rankBadgeCard');
+      badgeCard.className = `relative p-6 rounded-2xl border-2 ${border} bg-slate-950/80 ${shadow} mb-6 text-center`;
+      const rankLetter = document.getElementById('rankLetter');
+      rankLetter.textContent = rank;
+      rankLetter.className = `text-6xl sm:text-7xl font-black font-display bg-gradient-to-br ${col} bg-clip-text text-transparent drop-shadow`;
+      const rankTitle = document.getElementById('rankTitle');
+      rankTitle.textContent = title;
+      rankTitle.className = `text-2xl sm:text-3xl font-black font-display tracking-wider uppercase ${textCol}`;
+      document.getElementById('rankTitleMalayalam').textContent = malTitle;
+      document.getElementById('rankDesc').textContent = desc;
+    }
+
+    /* ==========================================================================
+       7. SIMULATION & CAMERA TOGGLE
+       ========================================================================== */
+    toggleCameraBtn.addEventListener('click', async () => {
+      cyberSound.playClick();
+      if (hologramBackdrop.classList.contains('hidden')) {
+        hologramBackdrop.classList.remove('hidden');
+        hologramBackdrop.style.display = 'flex';
+        video.classList.add('opacity-0', 'pointer-events-none');
+        video.style.opacity = '0';
+        camModeText.textContent = 'AI HOLOGRAM';
+        toggleCameraBtn.textContent = 'USE WEBCAM';
+      } else {
+        hologramBackdrop.classList.add('hidden');
+        hologramBackdrop.style.display = 'none';
+        video.classList.remove('opacity-0', 'pointer-events-none');
+        video.style.opacity = '1';
+        video.style.display = 'block';
+        camModeText.textContent = 'LIVE WEBCAM ACTIVE';
+        toggleCameraBtn.textContent = 'AI HOLOGRAM';
+      }
+    });
+
+    let simOverrideTimeout = null;
+    document.querySelectorAll('.sim-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        cyberSound.playClick(800);
+        const emotion = btn.dataset.emotion;
+        document.getElementById('simOverrideTag').classList.remove('hidden');
+
+        if (detector) {
+          const mockBlendshapes = {
+            smileIntensity: emotion === 'SMILE' || emotion === 'LAUGH' ? 88 : 12,
+            mouthOpen: emotion === 'LAUGH' || emotion === 'CRY' ? 65 : 10,
+            browRaise: emotion === 'CRY' ? 60 : 15,
+            fierceIntensity: emotion === 'ANGRY' ? 82 : 6,
+            headStability: 92
+          };
+          updateBlendshapeTickers(mockBlendshapes);
+          detectedEmotionLabel.textContent = `DETECTED: ${emotion}`;
+
+          if (emotion === backgroundDemand && !isSuccessLocked) {
+            handleEmotionMatch(backgroundDemand);
+          } else {
+            const r = detector.speakOppositeRoast(emotion, true);
+            const activeData = DEMANDS_DATA[emotion];
+            if (activeData && activeData.memeImg) {
+              roastMemeAvatar.src = activeData.memeImg;
+            }
+            roastSpeechText.textContent = `"${r.ml}"`;
+            roastSpeechBanner.classList.remove('hidden');
+            setTimeout(() => roastSpeechBanner.classList.add('hidden'), 2500);
+          }
+        }
+
+        if (simOverrideTimeout) clearTimeout(simOverrideTimeout);
+        simOverrideTimeout = setTimeout(() => {
+          document.getElementById('simOverrideTag').classList.add('hidden');
+        }, 2200);
+      });
+    });
+
+    // Navigation & controls
+    document.getElementById('startChallengeBtn').addEventListener('click', () => {
+      cyberSound.playTargetLock();
+      startGame();
+    });
+
+    document.getElementById('navHomeBtn').addEventListener('click', () => {
+      cyberSound.playClick();
+      if (gameState !== 'hero') {
+        if (timerInterval) clearInterval(timerInterval);
+        gameState = 'hero';
+        heroScreen.classList.remove('hidden');
+        arenaScreen.classList.add('hidden');
+        resultsModal.classList.add('hidden');
+      }
+    });
+
+    const testVoiceBtn = document.getElementById('testVoiceBtn');
+    if (testVoiceBtn) {
+      testVoiceBtn.addEventListener('click', () => {
+        cyberSound.playClick();
+        if (typeof window !== 'undefined' && window.speechSynthesis) {
+          window.speechSynthesis.resume();
+        }
+        if (!detector) detector = new EmotionDetector({ voiceEnabled: true });
+        detector.options.voiceEnabled = true;
+
+        const roast = detector.speakOppositeRoast('SMILE', true);
+        if (roastMemeAvatar) roastMemeAvatar.src = 'assets/meme_vintage.jpg';
+        roastSpeechText.textContent = `"${roast.ml}"`;
+        roastSpeechBanner.classList.remove('hidden');
+        setTimeout(() => roastSpeechBanner.classList.add('hidden'), 3500);
+      });
+    }
+
+    const soundToggleBtn = document.getElementById('soundToggleBtn');
+    const soundIcon = document.getElementById('soundIcon');
+    const soundLabel = document.getElementById('soundLabel');
+    soundToggleBtn.addEventListener('click', () => {
+      const isMuted = cyberSound.toggleMute();
+      if (detector) detector.options.voiceEnabled = !isMuted;
+      soundIcon.textContent = isMuted ? '🔇' : '🔊';
+      soundLabel.textContent = isMuted ? 'VOICE MUTED' : 'ROAST VOICE ON';
+      if (!isMuted) {
+        cyberSound.playClick(1000);
+        if (typeof window !== 'undefined' && window.speechSynthesis) {
+          window.speechSynthesis.resume();
+        }
+      }
+    });
+
+    const modeBtns = document.querySelectorAll('.mode-btn');
+    modeBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        cyberSound.playClick(600);
+        gameMode = btn.dataset.mode;
+        document.getElementById('navModeBadge').textContent = `MODE: ${gameMode.toUpperCase()}`;
+        modeBtns.forEach(b => {
+          b.className = 'mode-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-mono transition-all border border-slate-800 bg-slate-950/40 text-slate-400 hover:text-slate-200';
+        });
+        btn.className = 'mode-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-mono transition-all border border-cyan-400 bg-cyan-950/60 text-cyan-200 shadow-[0_0_20px_rgba(0,240,255,0.3)] scale-105';
+      });
+    });
+
+    const pauseToggleBtn = document.getElementById('pauseToggleBtn');
+    const pauseBtnIcon = document.getElementById('pauseBtnIcon');
+    const pauseBtnLabel = document.getElementById('pauseBtnLabel');
+
+    function togglePause() {
+      cyberSound.playClick();
+      isPaused = !isPaused;
+      pauseOverlay.classList.toggle('hidden', !isPaused);
+      pauseBtnIcon.textContent = isPaused ? '▶' : '⏸';
+      pauseBtnLabel.textContent = isPaused ? 'Resume' : 'Pause';
+    }
+
+    pauseToggleBtn.addEventListener('click', togglePause);
+    document.getElementById('resumeArenaBtn').addEventListener('click', togglePause);
+
+    document.getElementById('skipTargetBtn').addEventListener('click', () => {
+      cyberSound.playClick();
+      advanceToNextDemand(false, 0, roundTimeLimit);
+    });
+
+    document.getElementById('restartArenaBtn').addEventListener('click', () => {
+      cyberSound.playClick();
+      startGame();
+    });
+
+    document.getElementById('exitArenaBtn').addEventListener('click', () => {
+      cyberSound.playClick();
+      if (timerInterval) clearInterval(timerInterval);
+      gameState = 'hero';
+      heroScreen.classList.remove('hidden');
+      arenaScreen.classList.add('hidden');
+      resultsModal.classList.add('hidden');
+    });
+
+    document.getElementById('resPlayAgainBtn').addEventListener('click', () => {
+      cyberSound.playClick();
+      startGame();
+    });
+
+    document.getElementById('resReturnHomeBtn').addEventListener('click', () => {
+      cyberSound.playClick();
+      gameState = 'hero';
+      heroScreen.classList.remove('hidden');
+      arenaScreen.classList.add('hidden');
+      resultsModal.classList.add('hidden');
+    });
+  </script>
+</body>
+</html>

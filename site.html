@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ആദ്യം മദിർക്കും പിന്നെ കൈക്കും | Aadum Madhirkkum Pinne Kaikkum — AI Expression Arena</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@500;600;700;800;900&family=Rajdhani:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Canvas Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
+
+  <!-- MediaPipe & Emotion Detector Dependencies -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            cyber: {
+              dark: '#05070f',
+              darker: '#020308',
+              card: 'rgba(10, 16, 31, 0.75)',
+              cyan: '#00f0ff',
+              violet: '#a855f7',
+              amber: '#f59e0b',
+              emerald: '#10b981',
+              rose: '#f43f5e'
+            }
+          },
+          fontFamily: {
+            sans: ['Space Grotesk', 'Rajdhani', 'sans-serif'],
+            display: ['Orbitron', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+            malayalam: ['Anek Malayalam', 'sans-serif'],
+          },
+          animation: {
+            'scan': 'scanLine 3s ease-in-out infinite',
+            'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
+            'reticle-spin': 'reticleSpin 12s linear infinite',
+            'reticle-spin-rev': 'reticleSpinRev 8s linear infinite',
+          },
+          keyframes: {
+            scanLine: {
+              '0%, 100%': { top: '0%' },
+              '50%': { top: '96%' },
+            },
+            pulseGlow: {
+              '0%, 100%': { opacity: '0.4', transform: 'scale(1)' },
+              '50%': { opacity: '0.9', transform: 'scale(1.02)' },
+            },
+            reticleSpin: {
+              '0%': { transform: 'rotate(0deg)' },
+              '100%': { transform: 'rotate(360deg)' },
+            },
+            reticleSpinRev: {
+              '0%': { transform: 'rotate(360deg)' },
+              '100%': { transform: 'rotate(0deg)' },
+            },
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #040711;
+      color: #f1f5f9;
+      font-family: 'Space Grotesk', sans-serif;
+      overflow-x: hidden;
+    }
+    .cyber-scanlines {
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                  linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+      background-size: 100% 3px, 6px 100%;
+      pointer-events: none;
+    }
+    .cyber-grid-bg {
+      background-image: 
+        linear-gradient(to right, rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .glass-panel {
+      background: rgba(10, 16, 31, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(0, 240, 255, 0.18);
+    }
+    .glass-panel-amber {
+      background: rgba(28, 18, 8, 0.75);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+    }
+    .neon-text-cyan {
+      text-shadow: 0 0 10px rgba(0, 240, 255, 0.6), 0 0 20px rgba(0, 240, 255, 0.3);
+    }
+    .neon-text-violet {
+      text-shadow: 0 0 10px rgba(168, 85, 247, 0.6), 0 0 20px rgba(168, 85, 247, 0.3);
+    }
+    .neon-text-amber {
+      text-shadow: 0 0 10px rgba(245, 158, 11, 0.6), 0 0 20px rgba(245, 158, 11, 0.3);
+    }
+  </style>
+</head>
+<body class="min-h-screen relative flex flex-col selection:bg-cyan-500/30 selection:text-cyan-200">
+
+  <!-- Background Layer -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div class="absolute top-[-10%] left-[15%] w-[500px] h-[500px] rounded-full bg-cyan-600/10 blur-[120px] pointer-events-none"></div>
+    <div class="absolute bottom-[10%] right-[10%] w-[600px] h-[600px] rounded-full bg-purple-600/10 blur-[140px] pointer-events-none"></div>
+    <div class="absolute inset-0 cyber-grid-bg opacity-40 pointer-events-none"></div>
+    <div class="absolute inset-0 cyber-scanlines opacity-25 pointer-events-none"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="relative z-30 w-full border-b border-cyan-500/20 bg-[#05070f]/80 backdrop-blur-xl px-4 py-3 sm:px-6">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div id="navHomeBtn" class="flex items-center gap-3 cursor-pointer group">
+        <div class="relative flex items-center justify-center w-10 h-10 rounded-lg bg-cyan-950/60 border border-cyan-400/40 group-hover:border-cyan-400 transition-all">
+          <span class="text-xl">🎭</span>
+          <div class="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-cyan-400 animate-ping"></div>
+        </div>
+        <div>
+          <h1 class="text-base sm:text-lg font-black tracking-wider uppercase font-display bg-gradient-to-r from-cyan-400 via-violet-300 to-amber-300 bg-clip-text text-transparent">
+            Aadum Madhirkkum Pinne Kaikkum
+          </h1>
+          <p class="text-xs font-malayalam text-slate-400 tracking-wide">
+            ആദ്യം മദിർക്കും പിന്നെ കൈക്കും <span class="text-cyan-400/60 text-[10px] font-mono">| AI ARENA</span>
+          </p>
+        </div>
+      </div>
+      
+      <button id="soundToggleBtn" class="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-cyan-500/30 bg-cyan-950/30 text-cyan-300 text-xs font-mono">
+        <span id="soundIcon">🔊</span>
+        <span id="soundLabel">AUDIO ON</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="relative z-10 flex-1 flex flex-col justify-center py-6">
+
+    <!-- HERO SCREEN -->
+    <section id="heroScreen" class="relative flex flex-col items-center justify-center min-h-[70vh] px-4 text-center max-w-4xl mx-auto">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-950/40 backdrop-blur-md mb-6 animate-pulse-glow">
+        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+        <span class="text-xs font-mono font-semibold tracking-widest uppercase text-cyan-300">
+          NEURAL BIOMETRIC ENGINE ACTIVE
+        </span>
+      </div>
+
+      <h2 class="text-2xl sm:text-3xl font-extrabold font-malayalam text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-violet-300 to-cyan-300 mb-2">
+        ആദ്യം മദിർക്കും പിന്നെ കൈക്കും
+      </h2>
+      <h1 class="text-4xl sm:text-6xl font-black uppercase font-display text-white mb-6">
+        Aadum <span class="text-cyan-400 neon-text-cyan">Madhirkkum</span> Pinne <span class="text-amber-400 neon-text-amber">Kaikkum</span>
+      </h1>
+
+      <p class="max-w-xl text-slate-300 font-light mb-8">
+        Challenge your emotions against live neural detection. Hit target emotions or face the voice roasts!
+      </p>
+
+      <button id="startChallengeBtn" class="px-10 py-4 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-display font-black text-xl tracking-widest uppercase transition-all shadow-[0_0_30px_rgba(0,240,255,0.4)]">
+        START CHALLENGE
+      </button>
+    </section>
+
+    <!-- ARENA SCREEN -->
+    <section id="arenaScreen" class="hidden max-w-5xl mx-auto px-4 w-full">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+        
+        <!-- Video Camera Stream Container -->
+        <div class="md:col-span-7 flex flex-col items-center">
+          <div class="relative w-full aspect-[4/3] rounded-2xl overflow-hidden glass-panel border-2 border-cyan-500/30 bg-black">
+            
+            <video id="webcam" autoplay playsinline style="transform: scaleX(-1); width: 100%; height: 100%; object-fit: cover;"></video>
+            
+            <!-- Scanning Line Effect -->
+            <div class="absolute inset-x-0 h-1 bg-cyan-400 shadow-[0_0_15px_#00f0ff] animate-scan opacity-80 pointer-events-none"></div>
+            
+            <!-- HUD Reticle -->
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <div class="w-64 h-64 rounded-full border border-dashed border-cyan-400/40 animate-reticle-spin"></div>
+            </div>
+          </div>
+          
+          <div class="mt-4 flex gap-3">
+            <button id="toggleCameraBtn" class="px-4 py-2 rounded-lg border border-cyan-500/40 bg-cyan-950/60 text-cyan-300 font-mono text-xs">
+              INITIALIZE CAMERA
+            </button>
+          </div>
+        </div>
+
+        <!-- Emotion Target HUD -->
+        <div class="md:col-span-5 flex flex-col justify-center gap-4">
+          <div class="p-6 rounded-2xl glass-panel-amber border-2 border-amber-500/40">
+            <span class="text-xs font-mono uppercase text-amber-400">ACTIVE DEMAND</span>
+            <h3 id="targetEmotionText" class="text-4xl font-black font-display text-white mt-1 mb-2">
+              SMILE
+            </h3>
+            <p id="roastSubtitle" class="text-sm font-malayalam text-amber-200">
+              ലക്ഷ്യം പൂർത്തിയാക്കൂ!
+            </p>
+          </div>
+
+          <div class="p-6 rounded-2xl glass-panel border border-cyan-500/30">
+            <span class="text-xs font-mono uppercase text-slate-400">DETECTED EMOTION</span>
+            <h4 id="detectedEmotionText" class="text-2xl font-bold font-mono text-cyan-300 mt-1">
+              CALIBRATING...
+            </h4>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Script logic -->
+  <script>
+    class EmotionDetector {
+      constructor(options = {}) {
+        this.voiceEnabled = options.voiceEnabled ?? true;
+        this.modelData = {
+          classes: ['SMILE', 'CRY', 'LAUGH', 'ANGRY', 'FREEZE'],
+          roasts: {
+            'SMILE': 'ഓ പിന്നെയ വലിയ ഒരു ചിരി!',
+            'CRY': 'അയ്യോ കരഞ്ഞു കളഞ്ഞേ!',
+            'LAUGH': 'ഇത്ര ചിരിക്കാൻ എന്തിരിക്കുന്നു!',
+            'ANGRY': 'ദേഷ്യം കണ്ടു പേടിച്ചു പോയി!',
+            'FREEZE': 'അനങ്ങാതെ നിൽക്കാൻ പറഞ്ഞപ്പോ മരവിച്ചു പോയോ!'
+          }
+        };
+      }
+
+      async start(videoElement, callback) {
+        const faceMesh = new FaceMesh({
+          locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`
+        });
+
+        faceMesh.setOptions({
+          maxNumFaces: 1,
+          refineLandmarks: true,
+          minDetectionConfidence: 0.5,
+          minTrackingConfidence: 0.5
+        });
+
+        faceMesh.onResults((results) => {
+          if (!results.multiFaceLandmarks || results.multiFaceLandmarks.length === 0) return;
+          
+          const landmarks = results.multiFaceLandmarks[0];
+          const mouthWidth = Math.hypot(landmarks[61].x - landmarks[291].x, landmarks[61].y - landmarks[291].y);
+          const mouthHeight = Math.hypot(landmarks[13].x - landmarks[14].x, landmarks[13].y - landmarks[14].y);
+
+          let detected = 'FREEZE';
+          if (mouthWidth > 0.15 && mouthHeight > 0.05) {
+            detected = 'LAUGH';
+          } else if (mouthWidth > 0.12) {
+            detected = 'SMILE';
+          } else if (mouthHeight > 0.08) {
+            detected = 'CRY';
+          } else if (mouthWidth < 0.08) {
+            detected = 'ANGRY';
+          }
+
+          callback({ emotion: detected });
+        });
+
+        const camera = new Camera(videoElement, {
+          onFrame: async () => {
+            await faceMesh.send({ image: videoElement });
+          },
+          width: 640,
+          height: 480
+        });
+
+        camera.start();
+      }
+
+      speakOppositeRoast(demand) {
+        if (!('speechSynthesis' in window) || !this.voiceEnabled) return;
+        const text = this.modelData.roasts[demand] || "ശ്രമിക്കൂ!";
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'ml-IN';
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    async function initEmotionGame() {
+      const detector = new EmotionDetector({ voiceEnabled: true });
+      const video = document.getElementById('webcam');
+      const demands = ['SMILE', 'CRY', 'LAUGH', 'ANGRY', 'FREEZE'];
+      let backgroundDemand = 'SMILE';
+
+      await detector.start(video, (result) => {
+        document.getElementById('detectedEmotionText').innerText = result.emotion;
+        
+        if (result.emotion === backgroundDemand) {
+          detector.speakOppositeRoast(backgroundDemand);
+          
+          const remaining = demands.filter(d => d !== backgroundDemand);
+          backgroundDemand = remaining[Math.floor(Math.random() * remaining.length)];
+          document.getElementById('targetEmotionText').innerText = backgroundDemand;
+          document.getElementById('roastSubtitle').innerText = detector.modelData.roasts[backgroundDemand] || '';
+        }
+      });
+    }
+
+    document.getElementById('startChallengeBtn').addEventListener('click', () => {
+      document.getElementById('heroScreen').classList.add('hidden');
+      document.getElementById('arenaScreen').classList.remove('hidden');
+      initEmotionGame();
+    });
+
+    document.getElementById('toggleCameraBtn').addEventListener('click', () => {
+      initEmotionGame();
+    });
+  </script>
+</body>
+</html>
