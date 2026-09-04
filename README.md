@@ -98,19 +98,6 @@ The server opens the game automatically. If port `8000` is busy, it selects the 
 - Local server: [run_game.py](run_game.py)
 - Deployment guide: [deploy_to_vercel.md](deploy_to_vercel.md)
 
-# Screenshots (Add at least 3)
-
-![Smile meme asset](assets/meme_vintage.jpg)
-
-Smile-themed visual asset used in the expression arena.
-
-![Laugh or shock meme asset](assets/meme_sadhanam.jpg)
-
-Laugh/shock visual asset used for the mouth-aperture challenge.
-
-![Angry meme asset](assets/meme_shaji.jpg)
-
-Angry visual asset used for the brow and squint challenge.
 
 # Diagrams
 
@@ -136,10 +123,10 @@ The project is software-only and uses a webcam as its input device. The included
 ### Project Demo
 
 The local demo starts with `py run_game.py` and opens the browser automatically. For a hosted demo, deploy the project using [deploy_to_vercel.md](deploy_to_vercel.md).
-
+https://madurikum2-0.vercel.app/
 # Video
 
-[Add demo video link here]
+[https://drive.google.com/drive/folders/1nYe9Uko0XybfE7OQoF83loy6Rwrg6_Fp]
 
 The video should demonstrate webcam permission, expression matching, recorded Malayalam roast playback, subtitles, scoring, and the results screen.
 
