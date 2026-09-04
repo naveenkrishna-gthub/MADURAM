@@ -116,13 +116,14 @@ flowchart TD
 
 The game converts webcam landmarks into expression scores, compares them with the current target, and plays the corresponding local roast recording.
 
-# Build Photos
 
-The project is software-only and uses a webcam as its input device. The included visual assets are stored in `assets/`, and the recorded roast clips are stored in `audio/`.
 
 ### Project Demo
 
 The local demo starts with `py run_game.py` and opens the browser automatically. For a hosted demo, deploy the project using [deploy_to_vercel.md](deploy_to_vercel.md).
+
+this is the updated link because we faced a technical issue with the app
+
 https://madurikum2-0.vercel.app/
 # Video
 
